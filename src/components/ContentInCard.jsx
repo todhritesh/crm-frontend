@@ -4,10 +4,29 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import axios from 'axios';
+import {Link} from 'react-router-dom'
 
-export default function ContentInCard({title,author,content,key,image}) {
-console.log(process.env.PUBLIC_URL + 'images')
+
+export default function ContentInCard({postData,setPostData,title,author,content,id,image}) {
+
+  async function deletePost(id){
+    try{
+      const res = await axios({
+        method:'delete',
+        url:`http://localhost:8000/api/posts/${id}`
+      })
+      console.log(res.data.msg)
+      const newData = postData.filter((item)=>item.id!==id)
+      setPostData(newData);
+    }catch{
+      console.log('post delete error')
+    }
+
+  }
+
   return (
     <Card sx={{ display: 'flex',mb:3 , py:2 }}>
       <CardMedia
@@ -17,6 +36,11 @@ console.log(process.env.PUBLIC_URL + 'images')
         alt={title}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column',minWidth: '70%' }}>
+        <Box sx={{display:'flex',justifyContent:'end'}}>
+          <IconButton >
+            <DeleteIcon onClick={()=>deletePost(id)}/>
+          </IconButton>
+        </Box>
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography component="div" variant="h5">
             {title}
@@ -28,7 +52,7 @@ console.log(process.env.PUBLIC_URL + 'images')
             {content}
           </Typography>
         </CardContent>
-      <Button sx={{ml:'auto'}} variant="contained">
+      <Button to={`/post/${id}`} sx={{ml:'auto'}} variant="contained" component={Link}>
         Read more
       </Button>
       </Box>
