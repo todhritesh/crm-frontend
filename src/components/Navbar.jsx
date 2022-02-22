@@ -7,34 +7,22 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import {Link} from 'react-router-dom';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 
 const Navbar = () => {
+  
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
@@ -102,6 +90,24 @@ const Navbar = () => {
           <Box sx={{ml:'auto', display: { xs: 'none', md: 'flex' } }}>
               <Button
                 component={Link}
+                to="/login"
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                Login
+              </Button>
+
+              <Button
+                component={Link}
+                to="/register"
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                Register
+              </Button>
+
+              <Button
+                component={Link}
                 to="/insert/category"
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
@@ -109,14 +115,19 @@ const Navbar = () => {
                 Insert Category
               </Button>
 
-              <Button
-              component={Link}
-              to="/insert/post"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                Insert Post
-              </Button>
+              {
+                localStorage.getItem('isLogin')=='true'
+                 && 
+                 <Button
+                 component={Link}
+                 to="/insert/post"
+                   onClick={handleCloseNavMenu}
+                   sx={{ my: 2, color: 'white', display: 'block' }}
+                 >
+                   Insert Post
+                 </Button>
+              }
+
           </Box>
           
         </Toolbar>
