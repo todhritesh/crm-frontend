@@ -13,7 +13,7 @@ import {Link} from 'react-router-dom';
 
 
 
-const Navbar = () => {
+const Navbar = ({login,setLogin}) => {
   
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const handleOpenNavMenu = (event) => {
@@ -23,6 +23,14 @@ const Navbar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const handleLogout = () => {
+    if(localStorage.getItem('isLogin')=='true'){
+      localStorage.clear();
+      localStorage.setItem('isLogin',false)
+      setLogin(localStorage.getItem('isLogin'))
+    }
+  }
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
@@ -88,7 +96,10 @@ const Navbar = () => {
 
 
           <Box sx={{ml:'auto', display: { xs: 'none', md: 'flex' } }}>
-              <Button
+              {
+                login == 'false'
+                &&
+                <Button
                 component={Link}
                 to="/login"
                 onClick={handleCloseNavMenu}
@@ -96,8 +107,12 @@ const Navbar = () => {
               >
                 Login
               </Button>
+              }
 
-              <Button
+              {
+                login == 'false'
+                &&
+                <Button
                 component={Link}
                 to="/register"
                 onClick={handleCloseNavMenu}
@@ -105,8 +120,12 @@ const Navbar = () => {
               >
                 Register
               </Button>
+              }
 
-              <Button
+              {
+                login == 'true'
+                &&
+                <Button
                 component={Link}
                 to="/insert/category"
                 onClick={handleCloseNavMenu}
@@ -114,9 +133,10 @@ const Navbar = () => {
               >
                 Insert Category
               </Button>
+              }
 
               {
-                localStorage.getItem('isLogin')=='true'
+                login =='true'
                  && 
                  <Button
                  component={Link}
@@ -126,6 +146,20 @@ const Navbar = () => {
                  >
                    Insert Post
                  </Button>
+              }
+
+              
+              {
+                login == 'true'
+                &&
+                <Button
+                component={Link}
+                to="/insert/category"
+                onClick={handleLogout}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+               Logout
+              </Button>
               }
 
           </Box>

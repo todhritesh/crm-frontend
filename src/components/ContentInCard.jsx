@@ -32,7 +32,8 @@ export default function ContentInCard({postData,setPostData,title,author,content
       <CardMedia
         component="img"
         sx={{ minWidth: '30%',objectFit:'contain' }}
-        image={process.env.PUBLIC_URL + "/images/abc.png"}
+        // image={process.env.PUBLIC_URL + "/images/abc.png"}
+        image={`http://localhost:8000/storage/images/${image}`}
         alt={title}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column',minWidth: '70%' }}>

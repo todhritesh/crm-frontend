@@ -22,6 +22,7 @@ export default function InsertPost() {
   const [author , setAuthor] = useState('')
   const [content , setContent] = useState('')
   const [categoryId , setCategoryId] = useState('')
+  const [image , setImage] = useState('')
   const [categoryData , setCategoryData] = useState([]);
 
   useEffect(()=>{
@@ -29,28 +30,33 @@ export default function InsertPost() {
   },[])
 
   async function addPostData(){
-    console.log('hello')
+    
     if(title===''||author===''||content===''||categoryId===''){
       console.log('empty')
     }else{
       try{
+        const formData = new FormData()
+        formData.append('title',title)
+        formData.append('author',author)
+        formData.append('content',content)
+        formData.append('category_id',categoryId)
+        formData.append('image',image)
+        console.log(image)
         const res = await axios('http://localhost:8000/api/posts',{
+          headers:{
+            "content-type":"multipart/form-data"
+          },
           method:'post',
-          data:{
-            title:title,
-            author:author,
-            content:content,
-            category_id:categoryId
-          }
+          data:formData
         });
-        navigate('/')
-      }catch{
-        console.log('error')
+        console.log(res)
+        // navigate('/')
+      }catch(err){
+        console.log('error',err)
       }
     }
   }
-
-
+console.log(image)
   return (
 
     <Grid sx={{mt:15}}>
@@ -60,6 +66,21 @@ export default function InsertPost() {
         </Typography>
       <FormControl fullWidth variant="standard" sx={{mb:2}}>
         <TextField label="Title" variant="outlined" color='primary'  onChange={(e)=>{return setTitle(e.target.value)}} value={title} placeholder='' id="bootstrap-input" placeholder="Title ..." />
+      </FormControl>
+
+      <FormControl fullWidth variant="standard" sx={{mb:2}}>
+      <input
+        style={{ display: "none" }}
+        id="contained-button-file"
+        type="file"
+        onChange={e=>setImage(e.target.files[0])}
+      />
+  <label htmlFor="contained-button-file">
+    <Button variant="contained" color="primary" component="span">
+      Upload image
+    </Button>
+  {image.name}
+  </label>
       </FormControl>
 
       <FormControl fullWidth variant="standard" sx={{mb:2}}>

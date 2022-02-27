@@ -26,7 +26,7 @@ export default function Login({setLogin}) {
       console.log(res)
       localStorage.setItem('isLogin',true);
       localStorage.setItem('user',JSON.stringify(res.data.user))
-      setLogin(true)
+      setLogin(localStorage.getItem('isLogin'))
       setEmail('')
       setPassword('')
       navigate('/')

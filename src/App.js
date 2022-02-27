@@ -11,29 +11,39 @@ import {useState} from 'react'
 
 
 function App() {
-const [login , setLogin] = useState();
+const [login , setLogin] = useState(localStorage.getItem('isLogin') || false);
 
   useEffect(()=>{
     
     if(localStorage.getItem('isLogin')==null){
       localStorage.setItem('isLogin',false)
+      setLogin(localStorage.getItem('isLogin'))
     }
   },[])
 
   return (
     <BrowserRouter>
 
-      <Navbar login />
+      <Navbar login={login} setLogin={setLogin} />
       <Routes>
         <Route path="/" exact element={<Container />} />
-        <Route path="/register" exact element={<Register />} />
-        <Route path="/login" exact element={<Login setLogin={setLogin} />} />
 
         {
-          (localStorage.getItem('isLogin')=='true') && <Route path="/insert/post" exact element={<InsertPost />} />
+          (login=='false') && <Route path="/register" exact element={<Register />} />
         }
-        
-        <Route path="/insert/category" exact element={<InsertCategory/>} />
+
+        {
+          (login=='false') && <Route path="/login" exact element={<Login login={login} setLogin={setLogin} />} />
+        }
+
+        {
+          (login=='true') && <Route path="/insert/post" exact element={<InsertPost />} />
+        }
+
+        {
+        (login=='true') && <Route path="/insert/category" exact element={<InsertCategory/>} />
+        }
+
         <Route path='/post/:id' exact element={<SingleContentView/>} />
         <Route path="/*" exact element={<Container />} />
       </Routes>
